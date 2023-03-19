@@ -1,6 +1,6 @@
-# template
+# front
 
-template project
+front
 
 # Commands
 
