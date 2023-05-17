@@ -26,24 +26,31 @@ class ProfileViewModel extends BaseViewModel {
 
   bool isMe = false;
   bool onEdit = false;
+  bool userExists = false;
 
   MeResult? user;
   String? imageId;
   Uint8List? image;
 
-  Future<void> onViewModelReady() async {
+  Future<void> onViewModelReady(BuildContext context) async {
     setBusy(true);
-    await fetchUser();
+    await fetchUser(context);
     setBusy(false);
   }
 
-  Future<void> fetchUser() async {
+  Future<void> fetchUser(BuildContext? context) async {
     if (id == null) {
       user = await authService.me();
       isMe = true;
     } else {
       user = await userService.getById(id);
       isMe = user?.isMe ?? false;
+    }
+    if (user == null && context != null) {
+      Navigator.of(context).pop();
+    }
+    else {
+      userExists = true;
     }
     setupControllers();
     notifyListeners();
@@ -72,7 +79,7 @@ class ProfileViewModel extends BaseViewModel {
           avatarId: imageId,
         ),
       );
-      await fetchUser();
+      await fetchUser(null);
     }
     setupControllers();
     changeEditStatus();

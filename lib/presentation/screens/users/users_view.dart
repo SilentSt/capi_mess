@@ -36,71 +36,74 @@ class UsersView extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(26),
           ),
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Приватный чат',
-                  style: AppTypography.sf.s18.w500.white,
-                ),
-                const SizedBox(height: 20),
-                if (viewModel.isBusy)
-                  const CupertinoActivityIndicator()
-                else ...[
-                  CupertinoSearchTextField(
-                    controller: viewModel.controller,
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 400, maxHeight: 400),
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Приватный чат',
+                    style: AppTypography.sf.s18.w500.white,
                   ),
                   const SizedBox(height: 20),
-                  Expanded(
-                    child: ListView.separated(
-                      itemBuilder: (context, index) {
-                        final item = viewModel.users[index];
-                        return CupertinoButton(
-                          onPressed: () => onSelectUser(item.uuid),
-                          child: Row(
-                            children: [
-                              if (item.avatar == null)
-                                Assets.images.avatar.image()
-                              else
-                                SizedBox(
-                                  width: 38,
-                                  height: 38,
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(10),
-                                    child: CachedNetworkImage(
-                                      imageUrl: item.avatar!.url,
-                                      fit: BoxFit.cover,
+                  if (viewModel.isBusy)
+                    const CupertinoActivityIndicator()
+                  else ...[
+                    CupertinoSearchTextField(
+                      controller: viewModel.controller,
+                    ),
+                    const SizedBox(height: 20),
+                    Expanded(
+                      child: ListView.separated(
+                        itemBuilder: (context, index) {
+                          final item = viewModel.users[index];
+                          return CupertinoButton(
+                            onPressed: () => onSelectUser(item.uuid),
+                            child: Row(
+                              children: [
+                                if (item.avatar == null)
+                                  Assets.images.avatar.image()
+                                else
+                                  SizedBox(
+                                    width: 38,
+                                    height: 38,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: CachedNetworkImage(
+                                        imageUrl: item.avatar!.url,
+                                        fit: BoxFit.cover,
+                                      ),
                                     ),
                                   ),
-                                ),
-                              const SizedBox(width: 10),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    item.login ?? '-',
-                                    style: AppTypography.sf.s15.w600.white,
-                                  ),
-                                  const SizedBox(height: 5),
-                                  Text(
-                                    '${item.firstName ?? '-'} ${item.lastName}',
-                                    style: AppTypography.sf.s15.w600.appGrey,
-                                  )
-                                ],
-                              )
-                            ],
-                          ),
-                        );
-                      },
-                      separatorBuilder: (context, index) => const SizedBox(height: 10),
-                      itemCount: viewModel.users.length,
+                                const SizedBox(width: 10),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      item.login ?? '-',
+                                      style: AppTypography.sf.s15.w600.white,
+                                    ),
+                                    const SizedBox(height: 5),
+                                    Text(
+                                      '${item.firstName ?? '-'} ${item.lastName}',
+                                      style: AppTypography.sf.s15.w600.appGrey,
+                                    )
+                                  ],
+                                )
+                              ],
+                            ),
+                          );
+                        },
+                        separatorBuilder: (context, index) => const SizedBox(height: 10),
+                        itemCount: viewModel.users.length,
+                      ),
                     ),
-                  ),
+                  ],
                 ],
-              ],
+              ),
             ),
           ),
         );

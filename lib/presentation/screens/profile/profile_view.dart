@@ -39,8 +39,11 @@ class ProfileView extends StatelessWidget {
         uploadService: uploadService,
         id: id,
       ),
-      onViewModelReady: (viewModel) => viewModel.onViewModelReady(),
+      onViewModelReady: (viewModel) => viewModel.onViewModelReady(context),
       builder: (context, viewModel, child) {
+        if (!viewModel.userExists) {
+          return const SizedBox();
+        }
         return Dialog(
           backgroundColor: ColorName.appLightGrey,
           shadowColor: ColorName.black.withOpacity(.5),
@@ -160,9 +163,8 @@ class ProfileView extends StatelessWidget {
                       const SizedBox(height: 20),
                       Text(
                         viewModel.user?.lastActivity == null
-                            ? '-'
-                            : DateFormat('hh:mm dd.MM.yyyy').format(
-                                viewModel.user!.lastActivity!.toLocal()),
+                            ? 'Последний визит: -'
+                            : 'Последний визит: ${DateFormat("hh:mm dd.MM.yyyy").format(viewModel.user!.lastActivity!.toLocal())}',
                         style: AppTypography.sf.black.s16,
                       ),
                       if (!viewModel.isMe) ...[
