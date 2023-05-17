@@ -294,6 +294,13 @@ class ChatsViewModel extends BaseViewModel {
   }
 
   Future<void> _onUpdate(SocketMessageModel model) async {
+    if (model.documents.isNotEmpty) {
+      for (final doc in model.documents) {
+        final res = await documentsService.getById(doc.documentId);
+        if (res == null) continue;
+        model.documentStats.add(res);
+      }
+    }
     messages[messages.indexOf(messages.firstWhere((element) => element.uuid == model.uuid))] = model;
     notifyListeners();
   }
