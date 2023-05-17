@@ -14,6 +14,7 @@ class AppTextField extends StatefulWidget {
     this.height = 60,
     this.onEnterText,
     this.style,
+    this.onFinish,
   }) : super(key: key);
 
   final String title;
@@ -26,6 +27,7 @@ class AppTextField extends StatefulWidget {
   final double height;
   final VoidCallback? onEnterText;
   final TextStyle? style;
+  final VoidCallback? onFinish;
 
   @override
   State<AppTextField> createState() => _AppTextFieldState();
@@ -42,10 +44,15 @@ class _AppTextFieldState extends State<AppTextField> {
         controller: widget.controller,
         textAlign: TextAlign.left,
         style: widget.style,
+        textInputAction: TextInputAction.go,
         onChanged: (val) {
           if (widget.onEnterText != null) {
             widget.onEnterText!();
           }
+        },
+        onSubmitted: (val) {
+          if (widget.onFinish == null) return;
+          widget.onFinish!();
         },
         decoration: InputDecoration(
           labelText: widget.title,

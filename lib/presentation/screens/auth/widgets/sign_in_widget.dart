@@ -45,6 +45,7 @@ class SignInWidget extends ViewModelWidget<AuthViewModel> {
                   style: AppTypography.sf.s16.w500.appGrey,
                   obscure: true,
                   title: 'Пароль',
+                  onFinish: viewModel.signIn,
                 ),
                 if (viewModel.session != null) ...[
                   const SizedBox(height: 10),
@@ -52,6 +53,7 @@ class SignInWidget extends ViewModelWidget<AuthViewModel> {
                     controller: viewModel.codeController,
                     style: AppTypography.sf.s16.w500.appGrey,
                     title: 'Код',
+                    onFinish: viewModel.verify,
                   ),
                 ],
                 const SizedBox(height: 20),
